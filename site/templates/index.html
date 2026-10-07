@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Heart disease prediction application based on the UCI Heart Disease dataset."
+    >
+
+    <title>Heart Disease Predictor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header>
+        <h1>Heart Disease Predictor</h1>
+
+        <p>
+            A machine learning application that estimates whether a patient
+            is likely to have heart disease. For education only, not a
+            medical diagnosis.
+        </p>
+    </header>
+
+
+    <form action="{{ url_for('predict') }}" method="POST">
+
+        <section>
+            <h2>Patient Information</h2>
+
+            <label for="age">Age (years)</label>
+            <input
+                type="number"
+                id="age"
+                name="age"
+                min="1"
+                max="120"
+                required
+            >
+
+            <label for="sex">Sex</label>
+            <select id="sex" name="sex" required>
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+            </select>
+
+            <label for="cp">Chest pain type</label>
+            <select id="cp" name="cp" required>
+                <option value="0">Typical angina</option>
+                <option value="1">Atypical angina</option>
+                <option value="2">Non-anginal pain</option>
+                <option value="3">Asymptomatic</option>
+            </select>
+        </section>
+
+
+        <section>
+            <h2>Blood Tests</h2>
+
+            <label for="trestbps">Resting blood pressure (mm Hg)</label>
+            <input
+                type="number"
+                id="trestbps"
+                name="trestbps"
+                min="50"
+                max="300"
+                required
+            >
+
+            <label for="chol">Serum cholesterol (mg/dl)</label>
+            <input
+                type="number"
+                id="chol"
+                name="chol"
+                min="50"
+                max="700"
+                required
+            >
+
+            <label for="fbs">Fasting blood sugar &gt; 120 mg/dl?</label>
+            <select id="fbs" name="fbs" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </section>
+
+
+        <section>
+            <h2>Heart Tests</h2>
+
+            <label for="restecg">Resting electrocardiographic results</label>
+            <select id="restecg" name="restecg" required>
+                <option value="0">Normal</option>
+                <option value="1">ST-T wave abnormality</option>
+                <option value="2">Probable or definite left ventricular hypertrophy</option>
+            </select>
+
+            <label for="thalach">Maximum heart rate achieved (bpm)</label>
+            <input
+                type="number"
+                id="thalach"
+                name="thalach"
+                min="40"
+                max="250"
+                required
+            >
+
+            <label for="exang">Exercise induced angina?</label>
+            <select id="exang" name="exang" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </section>
+
+
+        <section>
+            <h2>Exercise Test &amp; Imaging</h2>
+
+            <label for="oldpeak">ST depression induced by exercise relative to rest (oldpeak)</label>
+            <input
+                type="number"
+                id="oldpeak"
+                name="oldpeak"
+                min="0"
+                max="10"
+                step="0.1"
+                required
+            >
+
+            <label for="slope">Slope of the peak exercise ST segment</label>
+            <select id="slope" name="slope" required>
+                <option value="0">Upsloping</option>
+                <option value="1">Flat</option>
+                <option value="2">Downsloping</option>
+            </select>
+
+            <label for="ca">Major vessels colored by fluoroscopy</label>
+            <select id="ca" name="ca" required>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+            <label for="thal">Thal (thallium stress test)</label>
+            <select id="thal" name="thal" required>
+                <option value="1">Normal</option>
+                <option value="2">Fixed defect</option>
+                <option value="3">Reversible defect</option>
+            </select>
+        </section>
+
+
+        <button type="submit">
+            Predict heart disease
+        </button>
+
+    </form>
+
+
+    {% if error %}
+    <section class="result">
+
+        <h2>Input error</h2>
+
+        <p>{{ error }}</p>
+
+    </section>
+    {% endif %}
+
+
+    {% if prediction is defined %}
+    <section class="result">
+
+        <h2>Prediction</h2>
+
+        {% if prediction == 1 %}
+            <h3>Likely to have heart disease</h3>
+        {% else %}
+            <h3>Unlikely to have heart disease</h3>
+        {% endif %}
+
+        <p>
+            Estimated probability of heart disease:
+            <strong>{{ probability }}%</strong>
+        </p>
+
+    </section>
+    {% endif %}
+
+</main>
+
+</body>
+</html>

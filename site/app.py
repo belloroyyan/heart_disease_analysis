@@ -15,8 +15,8 @@ app = Flask(__name__)
 # ones), so new input must go through that same fitted `ct` before the model.
 
 try:
-    preprocessor = joblib.load(r"C:\Users\Kato\Downloads\heart_site (1)\heart_site\model\preprocessor.joblib")
-    model = joblib.load(r"C:\Users\Kato\Downloads\heart_site (1)\heart_site\model\heart_disease_model.joblib")
+    preprocessor = joblib.load("model/preprocessor.joblib")
+    model = joblib.load("model/heart_disease_model.joblib")
 except FileNotFoundError as error:
     raise SystemExit(
         f"{error}\nPut heart_disease_model.joblib and preprocessor.joblib "
